@@ -38,7 +38,7 @@
 
     "ansible_cleanup": "true",
     "ansible_install_nfs": "true",
-    "ansible_install_docker": "true",
+    "ansible_install_packages": "wget,curl",
     "ansible_update_os": "true",
 
     "whiteout": "false",
@@ -144,7 +144,7 @@
       "type": "ansible-local",
       "playbook_file": "ansible/main.yml",
       "galaxy_file": "requirements.yml",
-      "extra_arguments": [ "--extra-vars \"update_os={{user `ansible_update_os` }} install_nfs={{user `ansible_install_nfs` }} install_docker={{user `ansible_install_docker` }}\"" ],
+      "extra_arguments": [ "--extra-vars \"install_packages={{user `ansible_install_packages` }} update_os={{user `ansible_update_os` }} install_nfs={{user `ansible_install_nfs` }}\"" ],
       "clean_staging_directory": "true"
     },
     {

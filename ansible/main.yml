@@ -6,18 +6,14 @@
   roles:
     - role: geerlingguy.nfs
       when: install_nfs is defined and (install_nfs == True or install_nfs == "true" or install_nfs == "yes")
-    - role: jgeusebroek.docker
-      when: install_docker is defined and (install_docker == True or install_docker == "true" or install_docker == "yes")
 
   tasks:
+    - name: Install requested packages
+      package:
+        name: "{{ install_packages.split(',') }}"
+      when: install_packages is defined and install_packages != ""
+
     - name: Update all packages to the latest version
       apt:
         upgrade: dist
       when: update_os is defined and (update_os == True or update_os == "true" or update_os == "yes")
-
-    - apt: "name={{ item }} state=installed"
-      with_items:
-        - git
-        - wget
-        - curl
-        - vim
