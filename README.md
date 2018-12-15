@@ -1,3 +1,3 @@
 # Packer-ubuntu
 
-CentOS Packer templates
+Ubuntu Packer templates
