@@ -38,12 +38,15 @@
 
     "ansible_cleanup": "true",
     "ansible_update_os": "true",
+    "ansible_install_packages": "",
     "ansible_unique_host_ssh_key": "true",
+    "ansible_configure_vagrant": "false",
+    "ansible_install_guest_tools": "true",
+    "ansible_remove_build_tools": "true",
+    "ansible_vmware_vm_tools": "dist",
     "ansible_install_nfs": "false",
-    "ansible_install_packages": "git,wget,curl",
 
-    "whiteout": "false",
-    "unique_host_ssh_key": "true"
+    "whiteout": "false"
 
   },
   "sensitive-variables": ["vmware-password", "ssh_password"],
@@ -116,6 +119,7 @@
         "ethernet0.networkName": "{{user `vmware-network`}}",
         "ethernet0.Address": "{{user `vmware-mac`}}",
         "ethernet0.addressType": "static",
+        "ethernet0.pciSlotNumber": "32",
 
         "scsi0:0.fileName": "disk.vmdk",
         "scsi0:0.present": "TRUE",
@@ -147,10 +151,14 @@
       "galaxy_file": "requirements.yml",
       "extra_arguments": [
             "--extra-vars \"",
-            "packer_install_nfs={{user `ansible_install_nfs` }} ",
+            "packer_update_os={{user `ansible_update_os` }} ",
             "packer_install_packages={{user `ansible_install_packages` }} ",
             "packer_unique_host_ssh_key={{user `ansible_unique_host_ssh_key` }} ",
-            "packer_update_os={{user `ansible_update_os` }} ",
+            "packer_configure_vagrant={{user `ansible_configure_vagrant` }} ",
+            "packer_install_guest_tools={{user `ansible_install_guest_tools` }} ",
+            "packer_remove_build_tools={{user `ansible_remove_build_tools` }} ",
+            "packer_vmware_vm_tools={{user `ansible_vmware_vm_tools` }} ",
+            "packer_install_nfs={{user `ansible_install_nfs` }} ",
             "\""
           ],
       "clean_staging_directory": "true"
