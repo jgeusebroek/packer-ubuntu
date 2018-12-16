@@ -168,7 +168,8 @@
       "expect_disconnect": "true",
 
       "environment_vars": [
-        "ANSIBLE_CLEANUP={{user `ansible_cleanup`}}"
+        "ANSIBLE_CLEANUP={{user `ansible_cleanup`}}",
+        "WHITEOUT={{user `whiteout`}}"
       ],
 
       "execute_command": "{{.Vars}} bash '{{.Path}}'",
