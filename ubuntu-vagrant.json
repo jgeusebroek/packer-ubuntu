@@ -86,6 +86,8 @@
 
       "version": "11",
 
+      "disk_size": "{{ user `disk_size`}}",
+
       "vmx_data": {
         "guestos": "{{ user `vmware_guest_os_type`}}",
         "memsize": "{{user `memory`}}",
