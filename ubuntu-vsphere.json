@@ -56,7 +56,7 @@
       "vm_name": "{{ user `vm_name`}}",
       "disk_size": "{{ user `disk_size`}}",
       "disk_type_id": "thin",
-      "output_directory": "builds/{{.Provider}}/{{ user `vm_name`}}",
+      "output_directory": "builds/vmware/{{ user `vm_name`}}",
 
       "boot_wait": "10s",
       "http_directory": "http",
