@@ -2,6 +2,7 @@
   "_comment": "Build with `packer build -var-file=ubuntu-1604.json ubuntu-vagrant.json`",
 
   "vm_name": "packer-ubuntu-1604-amd64",
+  "ubuntu_version": "1604",
 
   "cpus": "4",
   "disk_size": "20480",

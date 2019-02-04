@@ -5,6 +5,8 @@
     "hostname": "localhost",
     "domain": "",
 
+    "build_version": "",
+
     "vmware_guest_os_type": "ubuntu-64",
     "vmware_tools_location": "/home/vagrant/linux.iso",
     "vmware_tools_type": "distro",
@@ -206,11 +208,17 @@
     }
   ],
   "post-processors": [
-    {
+    [
+      {
       "type": "vagrant",
-      "compression_level": 6,
       "output": "./builds/{{.Provider}}/{{ user `vm_name` }}_{{.Provider}}.box"
-    }
+      },
+      {
+        "type": "vagrant-cloud",
+        "box_tag": "jgeusebroek/ubuntu-{{user `ubuntu_version`}}",
+        "version": "{{user `build_version`}}"
+        }
+    ]
   ]
 
 }
