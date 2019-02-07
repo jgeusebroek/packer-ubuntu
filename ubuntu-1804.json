@@ -3,6 +3,7 @@
 
   "vm_name": "packer-ubuntu-1804-amd64",
   "ubuntu_version": "1804",
+  "vmware_guest_os_type": "ubuntu64Guest",
 
   "cpus": "4",
   "disk_size": "20480",
