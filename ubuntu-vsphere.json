@@ -73,15 +73,24 @@
       "guest_os_type":        "{{user `vmware_guest_os_type`}}",
 
       "CPUs":                 "{{user `cpus`}}",
-      "disk_size":            "{{user `disk_size`}}",
       "RAM":                  "{{user `memory`}}",
       "RAM_reserve_all":      "{{user `memory_reserve_all`}}",
 
-      "network_card":         "{{user `network_card`}}",
-      "network":              "{{user `vsphere-network`}}",
+      "storage": [
+        {
+          "disk_size": "{{user `disk_size`}}",
+          "disk_thin_provisioned": "{{user `disk_thin`}}"
+        }
+      ],
+
+      "network_adapters": [
+        {
+          "network": "{{user `vsphere-network`}}",
+          "network_card": "{{user `network_card`}}"
+        }
+      ],
 
       "disk_controller_type":  "{{user `disk_controller`}}",
-      "disk_thin_provisioned": "{{user `disk_thin`}}",
 
       "vm_name": "{{ user `vm_name`}}",
 
