@@ -28,7 +28,7 @@ autoinstall:
         - root:$6$aMdDRNAGyIjs$ubBjPF/iXEqOrguc.BC6y4JjS4no0KB710ElYr6nQ52o/Jp/fl2azAY/YLLiCOkrmpuZFLu8MoqFYjepAMS0//
   locale: en_US
   keyboard:
-    layout: en
+    layout: us
   storage:
     config:
       - id: disk-sda
