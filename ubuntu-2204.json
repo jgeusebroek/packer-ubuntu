@@ -1,7 +1,7 @@
 {
   "_comment": "Build with `packer build -var-file=ubuntu-2204.json ubuntu-ai-vagrant.json`",
 
-  "vm_name": "packer-ubuntu-2204-amd64",
+  "vm_name": "packer-ubuntu-22.04.3-amd64",
   "ubuntu_version": "2204",
   "vmware_guest_os_type": "ubuntu64Guest",
 

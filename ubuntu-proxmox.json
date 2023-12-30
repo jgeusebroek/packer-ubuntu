@@ -1,0 +1,167 @@
+{
+  "variables": {
+
+    "vm_name": "packer-ubuntu-22.04.3-amd64",
+    "description": "Ubuntu 22.04.3 template.",
+    "tags": "ubuntu;template",
+    "hostname": "localhost",
+    "domain": "",
+
+    "cpus": "4",
+    "sockets": "1",
+
+    "disk_size": "20",
+    "disk_controller": "scsi",
+    "disk_thin": "true",
+
+    "memory": "1024",
+    "network_card": "virtio",
+    "bridge": "{{env `PACKER_PROXMOX_BRIDGE`}}",
+    
+    "iso_checksum": "a4acfda10b18da50e2ec50ccaf860d7f20b389df8765611142305c0e911d16fd",
+    "iso_name": "ubuntu-22.04.3-live-server-amd64.iso",
+    "iso_url": "https://releases.ubuntu.com/22.04/ubuntu-22.04.3-live-server-amd64.iso",
+
+    "ssh_username": "root",
+    "ssh_password": "toor",
+    
+    "proxmox-url": "{{env `PACKER_PROXMOX_URL`}}",
+    "proxmox-node": "{{env `PACKER_PROXMOX_NODE`}}",
+    "proxmox-username": "{{env `PACKER_PROXMOX_USERNAME`}}",
+    "proxmox-password": "{{env `PACKER_PROXMOX_PASSWORD`}}",
+    "proxmox-storage-pool": "{{env `PACKER_PROXMOX_STORAGE_POOL`}}",
+        
+    "ansible_cleanup": "true",
+    "ansible_update_os": "true",
+    "ansible_install_packages": "",
+    "ansible_unique_host_ssh_key": "true",
+    "ansible_configure_vagrant": "false",
+    "ansible_install_guest_tools": "true",
+    "ansible_remove_build_tools": "true",
+    "ansible_vmware_vm_tools": "dist",
+    "ansible_install_nfs": "false",
+
+    "whiteout": "false"
+
+  },
+  "sensitive-variables": ["proxmox-password", "ssh_password"],
+  "builders": [
+    {
+      "type": "proxmox-iso",
+
+      "proxmox_url":               "{{user `proxmox-url`}}",
+      "node":                      "{{user `proxmox-node`}}",
+      "username":                  "{{user `proxmox-username`}}",
+      "password":                  "{{user `proxmox-password`}}",
+      "insecure_skip_tls_verify":  "true",
+
+      "os":                    "l26",
+      "cpu_type":              "host",
+      "cores":                 "{{user `cpus`}}",
+      "sockets":               "{{user `sockets`}}",
+      "memory":                "{{user `memory`}}",
+
+      "scsi_controller":        "virtio-scsi-single",
+
+      "disks": [
+        {
+          "type": "{{user `disk_controller`}}",
+          "disk_size": "{{user `disk_size`}}",
+          "storage_pool": "{{user `proxmox-storage-pool`}}",
+          "ssd": "true",
+          "discard": "true",
+          "cache_mode": "none"
+        }
+      ],
+
+      "network_adapters": [
+        {
+          "model": "{{user `network_card`}}",
+          "bridge": "{{user `bridge`}}"
+        }
+      ],
+
+      "vm_name": "{{ user `vm_name`}}",
+
+      "http_directory": "http",
+
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+
+      "ssh_timeout": "15m",
+      "ssh_handshake_attempts": "1000",
+
+      "boot_command": [
+        "<esc><esc><esc><esc>e<wait>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "<del><del><del><del><del><del><del><del>",
+        "linux /casper/vmlinuz --- autoinstall ds=\"nocloud-net;seedfrom=http://{{.HTTPIP}}:{{.HTTPPort}}/proxmox\"<enter><wait>",
+        "initrd /casper/initrd<enter><wait>",
+        "boot<enter>",
+        "<enter><f10><wait>"
+      ],
+
+      "iso_checksum": "none",
+      "iso_file": "nas:iso/{{user `iso_name` }}",
+      "unmount_iso": "true",
+
+      "tags": "{{user `tags` }}",
+      "template_description": "{{user `description` }}"
+    }
+
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} bash '{{.Path}}'",
+      "script": "scripts/ansible.sh"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "ansible/main.yml",
+      "galaxy_file": "requirements.yml",
+      "galaxy_roles_path": "/root/.ansible/roles",
+      "extra_arguments": [
+            "--extra-vars \"",
+            "packer_update_os={{user `ansible_update_os` }} ",
+            "packer_install_packages={{user `ansible_install_packages` }} ",
+            "packer_unique_host_ssh_key={{user `ansible_unique_host_ssh_key` }} ",
+            "packer_configure_vagrant={{user `ansible_configure_vagrant` }} ",
+            "packer_install_guest_tools={{user `ansible_install_guest_tools` }} ",
+            "packer_remove_build_tools={{user `ansible_remove_build_tools` }} ",
+            "packer_vmware_vm_tools={{user `ansible_vmware_vm_tools` }} ",
+            "packer_install_nfs={{user `ansible_install_nfs` }} ",
+            "\""
+          ],
+      "clean_staging_directory": "true"
+    },
+    {
+      "type": "shell",
+      "expect_disconnect": "true",
+
+      "environment_vars": [
+        "ANSIBLE_CLEANUP={{user `ansible_cleanup`}}",
+        "WHITEOUT={{user `whiteout`}}"
+      ],
+
+      "execute_command": "{{.Vars}} bash '{{.Path}}'",
+      "scripts": [
+        "scripts/cleanup.sh"
+      ]
+    }
+  ]
+
+}
