@@ -1,6 +1,6 @@
 builds
 packer_cache
 environment.sh
-proxmox_environment.sh
+proxmox_environment*.sh
 .vagrant
 .DS_Store

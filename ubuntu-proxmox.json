@@ -30,6 +30,7 @@
     "proxmox-username": "{{env `PACKER_PROXMOX_USERNAME`}}",
     "proxmox-password": "{{env `PACKER_PROXMOX_PASSWORD`}}",
     "proxmox-storage-pool": "{{env `PACKER_PROXMOX_STORAGE_POOL`}}",
+    "proxmox-iso-storage": "{{env `PACKER_PROXMOX_ISO_STORAGE`}}",
         
     "ansible_cleanup": "true",
     "ansible_update_os": "true",
@@ -115,7 +116,7 @@
       ],
 
       "iso_checksum": "none",
-      "iso_file": "nas:iso/{{user `iso_name` }}",
+      "iso_file": "{{user `proxmox-iso-storage`}}:iso/{{user `iso_name` }}",
       "unmount_iso": "true",
 
       "tags": "{{user `tags` }}",
