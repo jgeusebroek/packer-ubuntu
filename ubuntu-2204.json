@@ -1,7 +1,7 @@
 {
   "_comment": "Build with `packer build -var-file=ubuntu-2204.json ubuntu-ai-vagrant.json`",
 
-  "vm_name": "packer-ubuntu-22.04.3-amd64",
+  "vm_name": "template-ubuntu-22.04.4-amd64",
   "ubuntu_version": "2204",
   "vmware_guest_os_type": "ubuntu64Guest",
 
@@ -9,7 +9,7 @@
   "disk_size": "20480",
   "memory": "4096",
 
-  "iso_checksum": "a4acfda10b18da50e2ec50ccaf860d7f20b389df8765611142305c0e911d16fd",
-  "iso_name": "ubuntu-22.04.3-live-server-amd64.iso",
-  "iso_url": "https://releases.ubuntu.com/22.04/ubuntu-22.04.3-live-server-amd64.iso"
+  "iso_checksum": "45f873de9f8cb637345d6e66a583762730bbea30277ef7b32c9c3bd6700a32b2",
+  "iso_name": "ubuntu-22.04.4-live-server-amd64.iso",
+  "iso_url": "https://releases.ubuntu.com/22.04/ubuntu-22.04.4-live-server-amd64.iso"
 }
